@@ -8,6 +8,6 @@
     {"name":"ip","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
     {"name":"date","type":"long","default":0},
     {"name":"result","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
-    {"name":"metadata", "type":{"type": "array", "items":{"type":"com.sarrubia.eventbus.avro.example.EventMetadata"}}}
+    {"name":"eventMetadata", "type":{"type": "array", "items":{"type":"com.sarrubia.eventbus.avro.example.EventMetadata"}}}
   ]
 }
