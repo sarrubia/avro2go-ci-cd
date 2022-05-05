@@ -28,8 +28,8 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Action"
           git add . 
-          git commit -m "Add Go models"
-          git tag -m "Versio ${{ steps.tag_version.outputs.number }}" -a v${{ steps.tag_version.outputs.number }}
+          git commit -m "Adding Go models from Avro schema by bot"
+          git tag -m "Version ${{ steps.tag_version.outputs.number }}" -a v${{ steps.tag_version.outputs.number }}
 
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -37,4 +37,4 @@ jobs:
           branch: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
-          tags:
+          tags: true
