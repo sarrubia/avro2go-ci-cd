@@ -7,7 +7,7 @@ then
       echo "* Not found version in properties file!"
       exit 1
 else
-      echo "* Tag version from properties file v$VERSION_PROPERTIES**"
+      echo "* Tag version from properties file v$VERSION_PROPERTIES"
 fi
 
 VERSION_REPO=$(git tag --list | grep "v$VERSION_PROPERTIES")
