@@ -16,8 +16,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Version from properties
+      - name: Checking version
         run: sh go/cmd/checkTag.sh
 
-      - name: Run avro2go
+      - name: Checking errors on model creation
         run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
