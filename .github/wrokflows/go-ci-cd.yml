@@ -1,5 +1,10 @@
 name: go-ci-cd
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/avro/schemas/**'
   pull_request:
     branches:
       - main
