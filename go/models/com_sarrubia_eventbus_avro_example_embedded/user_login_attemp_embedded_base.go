@@ -3,18 +3,18 @@
 package com_sarrubia_eventbus_avro_example_embedded
 
 // UserLoginAttemptEventAVSC Avro schema to send to Schema Registry
-const UserLoginAttemptEventAVSC = "{\"type\":\"record\",\"name\":\"UserLoginAttemptEvent\",\"namespace\":\"com.sarrubia.eventbus.avro.example.embedded\",\"doc\":\"example app' schema\",\"fields\":[{\"name\":\"email\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"ip\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"date\",\"type\":\"long\",\"default\":0},{\"name\":\"result\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"metadata\",\"type\":{\"items\":{\"fields\":[{\"default\":\"NONE\",\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"}},{\"default\":null,\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}]},{\"default\":\"NONE\",\"name\":\"version\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"}},{\"default\":0,\"name\":\"creation\",\"type\":\"long\"},{\"default\":\"NONE\",\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"}}],\"name\":\"EventMetadata\",\"namespace\":\"com.sarrubia.eventbus.avro.example.embedded\",\"type\":\"record\"},\"type\":\"array\"},\"default\":null}]}"
+const UserLoginAttemptEventAVSC = "{\"type\":\"record\",\"name\":\"UserLoginAttemptEvent\",\"namespace\":\"com.sarrubia.eventbus.avro.example.embedded\",\"doc\":\"example app' schema\",\"fields\":[{\"name\":\"email\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"ip\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"date\",\"type\":\"long\",\"default\":0},{\"name\":\"result\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"metadata\",\"type\":{\"items\":{\"fields\":[{\"default\":\"NONE\",\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"}},{\"default\":null,\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}]},{\"default\":\"NONE\",\"name\":\"version\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"}},{\"default\":0,\"name\":\"creation\",\"type\":\"long\"},{\"default\":\"NONE\",\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"}}],\"name\":\"EventMetadataEmbedded\",\"namespace\":\"com.sarrubia.eventbus.avro.example.embedded\",\"type\":\"record\"},\"type\":\"array\"},\"default\":null}]}"
 
 // UserLoginAttemptEventSubject schema registry subject
 const UserLoginAttemptEventSubject = "com.sarrubia.eventbus.avro.example.embedded.UserLoginAttemptEvent"
 
 // UserLoginAttemptEventBase example app' schema
 type UserLoginAttemptEventBase struct {
-	Email    string          `avro:"email"`
-	Ip       string          `avro:"ip"`
-	Date     int64           `avro:"date"`
-	Result   string          `avro:"result"`
-	Metadata []EventMetadata `avro:"metadata"`
+	Email    string                  `avro:"email"`
+	Ip       string                  `avro:"ip"`
+	Date     int64                   `avro:"date"`
+	Result   string                  `avro:"result"`
+	Metadata []EventMetadataEmbedded `avro:"metadata"`
 }
 
 // Schema [REQUIRED] returns the schema const that belongs to UserLoginAttemptEvent
