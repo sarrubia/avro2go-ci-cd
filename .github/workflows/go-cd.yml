@@ -1,6 +1,6 @@
 name: go-cd
 on:
-  pull_request:
+  push:
     branches:
       - main
     paths:
