@@ -18,3 +18,6 @@ jobs:
 
       - name: Run avro2go
         run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
+
+      - name: Version from properties
+        run: echo "Merge will be tagged as version $(./go/cmd/goProperties -file='gradle.properties' -prop='version')"

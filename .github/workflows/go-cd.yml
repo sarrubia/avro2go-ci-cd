@@ -7,7 +7,7 @@ on:
       - 'src/avro/schemas/**'
 
 jobs:
-  code:
+  build:
     name: Genereate Go Models
     runs-on: ubuntu-latest
     steps:
@@ -19,12 +19,17 @@ jobs:
       - name: Run avro2go
         run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
 
+      - name: Version from properties
+        id: tag_version
+        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='gradle.properties' -prop='version')"
+
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Action"
           git add . 
           git commit -m "Add Go models"
+          git tag -m "Versio ${{ steps.tag_version.outputs.number }}" -a v${{ steps.tag_version.outputs.number }}
 
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -32,3 +37,4 @@ jobs:
           branch: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
+          tags:
