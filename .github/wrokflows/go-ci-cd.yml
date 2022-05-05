@@ -1,0 +1,35 @@
+name: go-ci-cd
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/avro/schemas/**'
+
+jobs:
+  code:
+    name: Genereate Go Models
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Run avro2go
+        run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
+
+      - name: Commit files # commit the output folder
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Action"
+          git add . 
+          git commit -m "Add Go models"
+
+      - name: Push changes # push the output folder
+        if: github.event_name == 'push'
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gotest #so far a test branch ... will be switched to main... also we need to plan the versioning tags for Go
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
