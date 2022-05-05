@@ -25,8 +25,8 @@ jobs:
         run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
 
       - name: Commit files # commit the output folder
+        if: github.event_name == 'push'
         run: |
-          git branch --list
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Action"
           git add . 
@@ -36,6 +36,6 @@ jobs:
         if: github.event_name == 'push'
         uses: ad-m/github-push-action@master
         with:
-          branch: main #so far a test branch ... will be switched to main... also we need to plan the versioning tags for Go
+          branch: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
