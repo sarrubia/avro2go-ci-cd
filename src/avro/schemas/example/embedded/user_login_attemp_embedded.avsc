@@ -14,7 +14,7 @@
         "type": "array",
         "items":{
               "type":"record",
-              "name":"EventMetadata",
+              "name":"EventMetadataEmbedded",
               "fields":[
                 {"name":"id","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
                 {"name":"key","type":["null",{"type":"string","avro.java.string":"String"}],"default":null},
