@@ -1,10 +1,5 @@
-name: go-ci-cd
+name: go-ci
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'src/avro/schemas/**'
   pull_request:
     branches:
       - main
@@ -23,19 +18,3 @@ jobs:
 
       - name: Run avro2go
         run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
-
-      - name: Commit files # commit the output folder
-        if: github.event_name == 'push'
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Action"
-          git add . 
-          git commit -m "Add Go models"
-
-      - name: Push changes # push the output folder
-        if: github.event_name == 'push'
-        uses: ad-m/github-push-action@master
-        with:
-          branch: main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
