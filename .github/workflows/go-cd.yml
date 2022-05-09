@@ -16,12 +16,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Autogenerate version
+        run: make version FILENAME=version.properties
+
+      - name: Checking version
+        run: sh go/cmd/checkTag.sh version.properties
+
       - name: Run avro2go
         run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
 
       - name: Version from properties
         id: tag_version
-        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='gradle.properties' -prop='version')"
+        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -prop='version')"
 
       - name: Commit files
         run: |

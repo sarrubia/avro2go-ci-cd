@@ -16,30 +16,5 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Autogenerate version
-        run: make version FILENAME=version.properties
-
-      - name: Checking version
-        run: sh go/cmd/checkTag.sh version.properties
-
       - name: Checking errors on model creation
         run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -dry-run
-
-      - name: Save autogenerate version
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Action"
-          git add version.properties
-          git commit -m "auto generate version file"
-
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-
-      - name: Push version
-        uses: ad-m/github-push-action@master
-        with:
-          branch: ${{ steps.extract_branch.outputs.branch }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force: true
