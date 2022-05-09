@@ -48,7 +48,7 @@ jobs:
       - run: |
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for added_modified_file in "${added_modified_files[@]}"; do
-            echo "Do something with this ${added_modified_file}."
+            echo "- Added ${added_modified_file}" >> CHANGES.md
           done
 
 
