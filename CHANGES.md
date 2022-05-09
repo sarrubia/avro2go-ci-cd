@@ -9,3 +9,8 @@
 - Renamed src/avro/schemas/example/embedded/event_metadata_embedded_added.avsc
 - Renamed src/avro/schemas/example/user_login_attemp_event.avsc
 - Modified src/avro/schemas/example/event_metadata.avsc
+## v1.202205.09-build.2296771542
+- Added 
+- Removed src/avro/schemas/example/embedded/event_metadata_embedded_added.avsc
+- Renamed 
+- Modified 
