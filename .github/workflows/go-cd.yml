@@ -30,6 +30,20 @@ jobs:
         run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
 
 
+      - name: Get file changes
+        uses: jitterbit/get-changed-files@v1
+        id: changelog
+        with:
+          format: 'json'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write Changelog
+        run: |
+          echo "v${{ steps.tag_version.outputs.number }}" >> CHANGES.md
+          readarray -t added_modified_files <<<"$(jq -r '.[]' <<<'${{ steps.changelog.outputs.added_modified }}')"
+          for file_name in ${added_modified_files[@]}; do
+            echo "- ${removed_file}"  >> CHANGES.md
+          done
 
 
       - name: Commit files
