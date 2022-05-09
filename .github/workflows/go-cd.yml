@@ -40,9 +40,15 @@ jobs:
       - name: Write Changelog
         run: |
           echo "v${{ steps.tag_version.outputs.number }}" >> CHANGES.md
-          readarray -t added_modified_files <<<"$(jq -r '.[]' <<<'${{ steps.changelog.outputs.added_modified }}')"
-          for file_name in ${added_modified_files[@]}; do
-            echo "- ${removed_file}"  >> CHANGES.md
+
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'csv'
+      - run: |
+          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          for added_modified_file in "${added_modified_files[@]}"; do
+            echo "Do something with this ${added_modified_file}."
           done
 
 
