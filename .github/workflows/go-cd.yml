@@ -41,12 +41,12 @@ jobs:
       - run: |
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
           for added_file in "${added_files[@]}"; do
-            [ ! -z "$added_file" ] && echo "- Added ${added_file}" >> CHANGES.md
+            [[ ! -z "$added_file" ]] && echo "- Added ${added_file}" >> CHANGES.md
           done
       - run: |
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
           for removed_file in "${removed_files[@]}"; do
-            [ ! -z "$removed_file" ] && echo "- Removed ${removed_file}" >> CHANGES.md
+            [[ ! -z "$removed_file" ]] && echo "- Removed ${removed_file}" >> CHANGES.md
           done
       - run: |
           mapfile -d ',' -t renamed_files < <(printf '%s,' '${{ steps.files.outputs.renamed }}')
