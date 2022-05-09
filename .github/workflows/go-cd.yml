@@ -29,26 +29,34 @@ jobs:
         id: tag_version
         run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
 
-
-      - name: Get file changes
-        uses: jitterbit/get-changed-files@v1
-        id: changelog
-        with:
-          format: 'json'
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Write Changelog
         run: |
-          echo "v${{ steps.tag_version.outputs.number }}" >> CHANGES.md
+          echo "## v${{ steps.tag_version.outputs.number }}" >> CHANGES.md
 
-      - id: files
+      - name: Fetch modified files
+        id: files
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'csv'
       - run: |
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
-          for added_modified_file in "${added_modified_files[@]}"; do
-            echo "- Added ${added_modified_file}" >> CHANGES.md
+          mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
+          for added_file in "${added_files[@]}"; do
+            echo "- Added ${added_file}" >> CHANGES.md
+          done
+      - run: |
+          mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
+          for removed_file in "${removed_files[@]}"; do
+            echo "- Removed ${removed_file}" >> CHANGES.md
+          done
+      - run: |
+          mapfile -d ',' -t renamed_files < <(printf '%s,' '${{ steps.files.outputs.renamed }}')
+          for renamed_file in "${renamed_files[@]}"; do
+            echo "- Renamed ${renamed_file}" >> CHANGES.md
+          done
+      - run: |
+          mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.modified }}')
+          for modified_file in "${modified_files[@]}"; do
+            echo "- Modified ${modified_file}" >> CHANGES.md
           done
 
 
