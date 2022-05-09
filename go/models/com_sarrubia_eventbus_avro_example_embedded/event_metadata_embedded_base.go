@@ -3,18 +3,18 @@
 package com_sarrubia_eventbus_avro_example_embedded
 
 // EventMetadataEmbeddedAVSC Avro schema to send to Schema Registry
-const EventMetadataEmbeddedAVSC = "{\"type\":\"record\",\"name\":\"EventMetadataEmbedded\",\"namespace\":\"com.sarrubia.eventbus.avro.example.embedded\",\"doc\":\"\",\"fields\":[{\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}],\"default\":null},{\"name\":\"version\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"creation\",\"type\":\"long\",\"default\":0},{\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"}]}"
+const EventMetadataEmbeddedAVSC = "{\"type\":\"record\",\"name\":\"EventMetadataEmbedded\",\"namespace\":\"com.sarrubia.eventbus.avro.example.embedded\",\"doc\":\"\",\"fields\":[{\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}],\"default\":null},{\"name\":\"versionNumber\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"creation\",\"type\":\"long\",\"default\":0},{\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"}]}"
 
 // EventMetadataEmbeddedSubject schema registry subject
 const EventMetadataEmbeddedSubject = "com.sarrubia.eventbus.avro.example.embedded.EventMetadataEmbedded"
 
 // EventMetadataEmbeddedBase
 type EventMetadataEmbeddedBase struct {
-	Id       string  `avro:"id"`
-	Key      *string `avro:"key"`
-	Version  string  `avro:"version"`
-	Creation int64   `avro:"creation"`
-	Type     string  `avro:"type"`
+	Id            string  `avro:"id"`
+	Key           *string `avro:"key"`
+	VersionNumber string  `avro:"versionNumber"`
+	Creation      int64   `avro:"creation"`
+	Type          string  `avro:"type"`
 }
 
 // Schema [REQUIRED] returns the schema const that belongs to EventMetadataEmbedded
