@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Autogenerate version
-        run: make version FILENAME=version.properties
+        run: make version FILENAME=version.properties GITHUB_RUN_ID=${{ github.run_id }}
 
       - name: Checking version
         run: sh go/cmd/checkTag.sh version.properties
@@ -28,6 +28,9 @@ jobs:
       - name: Version from properties
         id: tag_version
         run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
+
+
+
 
       - name: Commit files
         run: |
