@@ -38,8 +38,8 @@ jobs:
         id: extract_branch
 
       - name: Push version
-          uses: ad-m/github-push-action@master
-          with:
-            branch: ${{ steps.extract_branch.outputs.branch }}
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            force: true
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ steps.extract_branch.outputs.branch }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
