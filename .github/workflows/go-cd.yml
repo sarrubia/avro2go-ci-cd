@@ -27,7 +27,7 @@ jobs:
 
       - name: Version from properties
         id: tag_version
-        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -prop='version')"
+        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
 
       - name: Commit files
         run: |

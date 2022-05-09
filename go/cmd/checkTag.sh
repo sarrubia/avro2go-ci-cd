@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION_PROPERTIES=$(./go/cmd/goProperties -file="$1" -prop="version")
+VERSION_PROPERTIES=$(./go/cmd/goProperties -file="$1" -key="version")
 
 if [ -z "$VERSION_PROPERTIES" ]
 then
