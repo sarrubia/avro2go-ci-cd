@@ -20,4 +20,4 @@ jobs:
         run: sh go/cmd/checkTag.sh
 
       - name: Checking errors on model creation
-        run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -output-dir="go/models"
+        run: ./go/cmd/avro2go -input-dir="src/avro/schemas" -dry-run
