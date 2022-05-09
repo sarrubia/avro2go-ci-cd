@@ -1,6 +1,6 @@
 {
   "type":"record",
-  "name":"EventMetadataEmbedded",
+  "name":"EventMetadataEmbeddedAdded",
   "namespace":"com.sarrubia.eventbus.avro.example.embedded",
   "fields":[
     {"name":"id","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
