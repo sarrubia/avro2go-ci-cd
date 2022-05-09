@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION_PROPERTIES=$(./go/cmd/goProperties -file='gradle.properties' -prop='version')
+VERSION_PROPERTIES=$(./go/cmd/goProperties -file="$1" -prop="version")
 
 if [ -z "$VERSION_PROPERTIES" ]
 then
