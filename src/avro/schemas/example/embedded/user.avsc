@@ -1,0 +1,10 @@
+{
+  "type": "record",
+  "name":"UserData",
+  "namespace":"com.sarrubia.eventbus.avro.example.embedded",
+  "doc": "example app' schema",
+  "fields":[
+    {"name":"email","type":{"type":"string"},"default":"NONE"},
+    {"name":"password","type":{"type":"string"},"default":"NONE"},
+    ]
+}

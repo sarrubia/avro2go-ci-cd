@@ -6,7 +6,7 @@
     {"name":"id","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
     {"name":"key","type":["null",{"type":"string","avro.java.string":"String"}],"default":null},
     {"name":"version","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
-    {"name":"creationLong","type":"long","default":0},
+    {"name":"creation","type":"long","default":0},
     {"name":"type","type":{"type":"string","avro.java.string":"String"},"default":"NONE"}
   ]
 }
