@@ -5,6 +5,6 @@
   "doc": "example app' schema",
   "fields":[
     {"name":"email","type":{"type":"string"},"default":"NONE"},
-    {"name":"password","type":{"type":"string"},"default":"NONE"},
+    {"name":"password","type":{"type":"string"},"default":"NONE"}
     ]
 }
