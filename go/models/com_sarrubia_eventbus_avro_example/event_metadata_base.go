@@ -3,18 +3,18 @@
 package com_sarrubia_eventbus_avro_example
 
 // EventMetadataAVSC Avro schema to send to Schema Registry
-const EventMetadataAVSC = "{\"type\":\"record\",\"name\":\"EventMetadata\",\"namespace\":\"com.sarrubia.eventbus.avro.example\",\"doc\":\"\",\"fields\":[{\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}],\"default\":null},{\"name\":\"version\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"creation\",\"type\":\"long\",\"default\":0},{\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"}]}"
+const EventMetadataAVSC = "{\"type\":\"record\",\"name\":\"EventMetadata\",\"namespace\":\"com.sarrubia.eventbus.avro.example\",\"doc\":\"\",\"fields\":[{\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}],\"default\":null},{\"name\":\"version\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"creationLong\",\"type\":\"long\",\"default\":0},{\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"}]}"
 
 // EventMetadataSubject schema registry subject
 const EventMetadataSubject = "com.sarrubia.eventbus.avro.example.EventMetadata"
 
 // EventMetadataBase
 type EventMetadataBase struct {
-	Id       string  `avro:"id"`
-	Key      *string `avro:"key"`
-	Version  string  `avro:"version"`
-	Creation int64   `avro:"creation"`
-	Type     string  `avro:"type"`
+	Id           string  `avro:"id"`
+	Key          *string `avro:"key"`
+	Version      string  `avro:"version"`
+	CreationLong int64   `avro:"creationLong"`
+	Type         string  `avro:"type"`
 }
 
 // Schema [REQUIRED] returns the schema const that belongs to EventMetadata

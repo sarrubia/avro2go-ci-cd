@@ -14,3 +14,5 @@
 - Removed src/avro/schemas/example/embedded/event_metadata_embedded_added.avsc
 - Renamed 
 - Modified 
+## v1.202205.10-build.2300413754
+- Modified src/avro/schemas/example/event_metadata.avsc
