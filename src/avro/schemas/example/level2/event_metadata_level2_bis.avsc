@@ -1,0 +1,12 @@
+{
+  "type":"record",
+  "name":"EventMetadataLevel2Bis",
+  "namespace":"com.sarrubia.eventbus.avro.example.level2",
+  "fields":[
+    {"name":"id","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
+    {"name":"key","type":["null",{"type":"string","avro.java.string":"String"}],"default":null},
+    {"name":"version","type":{"type":"string","avro.java.string":"String"},"default":"NONE"},
+    {"name":"creationLong","type":"long","default":0},
+    {"name":"type","type":{"type":"string","avro.java.string":"String"},"default":"NONE"}
+  ]
+}
