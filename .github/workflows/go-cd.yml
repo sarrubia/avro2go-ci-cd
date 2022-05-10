@@ -48,7 +48,7 @@ jobs:
               ADDED_BLOCK+="- ${added_file}${NL}"
             done
             ADDED_BLOCK+=${NL}
-            echo $ADDED_BLOCK >> CHANGES.md
+            echo -e $ADDED_BLOCK >> CHANGES.md
           fi
       - run: |
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
