@@ -39,42 +39,49 @@ jobs:
         with:
           format: 'csv'
       - run: |
+          NL='\n'
+          CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
           if [ "${#added_files[@]}" -gt "0" ]
           then
-            NL='\n'
-            ADDED_BLOCK="#### Added${NL}"
-            for added_file in "${added_files[@]}"; do
-              ADDED_BLOCK+="- ${added_file}${NL}"
+            BLOCK="#### Added${NL}"
+            for file in "${added_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
             done
-            ADDED_BLOCK+=${NL}
-            echo -e $ADDED_BLOCK >> CHANGES.md
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
           fi
-      - run: |
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
-          for removed_file in "${removed_files[@]}"; do
-            if [ ! -z "$removed_file" ]
-            then
-              echo "- Removed ${removed_file}" >> CHANGES.md
-            fi
-          done
-      - run: |
+          if [ "${#removed_files[@]}" -gt "0" ]
+          then
+            BLOCK="#### Removed${NL}"
+            for file in "${removed_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
+            done
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
+          fi
           mapfile -d ',' -t renamed_files < <(printf '%s,' '${{ steps.files.outputs.renamed }}')
-          for renamed_file in "${renamed_files[@]}"; do
-            if [ ! -z "$renamed_file" ]
-            then
-              echo "- Renamed ${renamed_file}" >> CHANGES.md
-            fi
-          done
-      - run: |
+          if [ "${#renamed_files[@]}" -gt "0" ]
+          then
+            BLOCK="#### Renamed${NL}"
+            for file in "${renamed_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
+            done
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
+          fi
           mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.modified }}')
-          for modified_file in "${modified_files[@]}"; do
-            if [ ! -z "$modified_file" ]
-            then
-              echo "- Modified ${modified_file}" >> CHANGES.md
-            fi
-          done
-
+          if [ "${#modified_files[@]}" -gt "0" ]
+          then
+            BLOCK="#### Modified${NL}"
+            for file in "${modified_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
+            done
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
+          fi
+          echo -e $CHANGE >> CHANGES.md
 
       - name: Commit files
         run: |
