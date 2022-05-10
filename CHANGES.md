@@ -36,3 +36,21 @@
 - src/avro/schemas/example/level2/event_metadata_level2_bis1.avsc
 
 
+## v1.202205.10-build.2301114351
+## v1.202205.10-build.2301114351
+#### Added
+- src/avro/schemas/example/embedded/user.avsc
+
+#### Removed
+- src/avro/schemas/example/level2/user_login_attemp_level2.avsc
+
+#### Renamed
+- src/avro/schemas/example/level2/event_metadata_level2_bis2.avsc
+- src/avro/schemas/example/level2/event_metadata_level2_event.avsc
+
+#### Modified
+- src/avro/schemas/example/event_metadata.avsc
+- src/avro/schemas/example/level2/event_metadata_level2_bis1.avsc
+- src/avro/schemas/example/user_login_attemp_event.avsc
+
+

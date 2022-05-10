@@ -3,7 +3,7 @@
 package com_sarrubia_eventbus_avro_example_level2
 
 // EventMetadataLevel2Bis1AVSC Avro schema to send to Schema Registry
-const EventMetadataLevel2Bis1AVSC = "{\"type\":\"record\",\"name\":\"EventMetadataLevel2Bis1\",\"namespace\":\"com.sarrubia.eventbus.avro.example.level2\",\"doc\":\"\",\"fields\":[{\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}],\"default\":null},{\"name\":\"version\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"creationLong\",\"type\":\"long\",\"default\":0},{\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"}]}"
+const EventMetadataLevel2Bis1AVSC = "{\"type\":\"record\",\"name\":\"EventMetadataLevel2Bis1\",\"namespace\":\"com.sarrubia.eventbus.avro.example.level2\",\"doc\":\"\",\"fields\":[{\"name\":\"id\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"key\",\"type\":[\"null\",{\"avro.java.string\":\"String\",\"type\":\"string\"}],\"default\":null},{\"name\":\"versionX\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"creationLong\",\"type\":\"long\",\"default\":0},{\"name\":\"type\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"}]}"
 
 // EventMetadataLevel2Bis1Subject schema registry subject
 const EventMetadataLevel2Bis1Subject = "com.sarrubia.eventbus.avro.example.level2.EventMetadataLevel2Bis1"
@@ -12,7 +12,7 @@ const EventMetadataLevel2Bis1Subject = "com.sarrubia.eventbus.avro.example.level
 type EventMetadataLevel2Bis1Base struct {
 	Id           string  `avro:"id"`
 	Key          *string `avro:"key"`
-	Version      string  `avro:"version"`
+	VersionX     string  `avro:"versionX"`
 	CreationLong int64   `avro:"creationLong"`
 	Type         string  `avro:"type"`
 }
