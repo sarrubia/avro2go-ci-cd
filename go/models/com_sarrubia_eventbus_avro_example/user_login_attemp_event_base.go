@@ -3,18 +3,18 @@
 package com_sarrubia_eventbus_avro_example
 
 // UserLoginAttemptEventAVSC Avro schema to send to Schema Registry
-const UserLoginAttemptEventAVSC = "{\"type\":\"record\",\"name\":\"UserLoginAttemptEvent\",\"namespace\":\"com.sarrubia.eventbus.avro.example\",\"doc\":\"example app' schema\",\"fields\":[{\"name\":\"email\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"ipMachina\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"date\",\"type\":\"long\",\"default\":0},{\"name\":\"result\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"metas\",\"type\":{\"items\":{\"type\":\"com.sarrubia.eventbus.avro.example.EventMetadata\"},\"type\":\"array\"},\"default\":null}]}"
+const UserLoginAttemptEventAVSC = "{\"type\":\"record\",\"name\":\"UserLoginAttemptEvent\",\"namespace\":\"com.sarrubia.eventbus.avro.example\",\"doc\":\"example app' schema\",\"fields\":[{\"name\":\"email\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"ipMac\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"date\",\"type\":\"long\",\"default\":0},{\"name\":\"result\",\"type\":{\"avro.java.string\":\"String\",\"type\":\"string\"},\"default\":\"NONE\"},{\"name\":\"metas\",\"type\":{\"items\":{\"type\":\"com.sarrubia.eventbus.avro.example.EventMetadata\"},\"type\":\"array\"},\"default\":null}]}"
 
 // UserLoginAttemptEventSubject schema registry subject
 const UserLoginAttemptEventSubject = "com.sarrubia.eventbus.avro.example.UserLoginAttemptEvent"
 
 // UserLoginAttemptEventBase example app' schema
 type UserLoginAttemptEventBase struct {
-	Email     string          `avro:"email"`
-	IpMachina string          `avro:"ipMachina"`
-	Date      int64           `avro:"date"`
-	Result    string          `avro:"result"`
-	Metas     []EventMetadata `avro:"metas"`
+	Email  string          `avro:"email"`
+	IpMac  string          `avro:"ipMac"`
+	Date   int64           `avro:"date"`
+	Result string          `avro:"result"`
+	Metas  []EventMetadata `avro:"metas"`
 }
 
 // Schema [REQUIRED] returns the schema const that belongs to UserLoginAttemptEvent
