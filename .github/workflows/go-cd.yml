@@ -40,12 +40,14 @@ jobs:
           format: 'csv'
       - run: |
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
-          for added_file in "${added_files[@]}"; do
-            if [ ! -z "$added_file" ]
-            then
-              echo "- Added ${added_file}" >> CHANGES.md
-            fi
-          done
+          if [ "${#added_files[@]}" -gt "0" ]
+          then
+            ADDED_BLOCK="### Added\n"
+            for added_file in "${added_files[@]}"; do
+              ADDED_BLOCK+="- ${added_file}\n"
+            done
+            echo $ADDED_BLOCK >> CHANGES.md
+          fi
       - run: |
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
           for removed_file in "${removed_files[@]}"; do
