@@ -42,12 +42,13 @@ jobs:
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
           if [ "${#added_files[@]}" -gt "0" ]
           then
-            ADDED_BLOCK="#### Added\n"
+            NL='\n'
+            ADDED_BLOCK="#### Added${NL}"
             for added_file in "${added_files[@]}"; do
-              ADDED_BLOCK+="- ${added_file}\n"
+              ADDED_BLOCK+="- ${added_file}${NL}"
             done
-            ADDED_BLOCK+="\n"
-            echo $ADDED_BLOCK$(cat CHANGES.md) > CHANGES.md
+            ADDED_BLOCK+=${NL}
+            echo $ADDED_BLOCK >> CHANGES.md
           fi
       - run: |
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
