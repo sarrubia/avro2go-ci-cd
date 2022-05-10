@@ -41,22 +41,34 @@ jobs:
       - run: |
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
           for added_file in "${added_files[@]}"; do
-            [[ ! -z "$added_file" ]] && echo "- Added ${added_file}" >> CHANGES.md
+            if [ ! -z "$added_file" ]
+            then
+              echo "- Added ${added_file}" >> CHANGES.md
+            fi
           done
       - run: |
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
           for removed_file in "${removed_files[@]}"; do
-            [[ ! -z "$removed_file" ]] && echo "- Removed ${removed_file}" >> CHANGES.md
+            if [ ! -z "$removed_file" ]
+            then
+              echo "- Removed ${removed_file}" >> CHANGES.md
+            fi
           done
       - run: |
           mapfile -d ',' -t renamed_files < <(printf '%s,' '${{ steps.files.outputs.renamed }}')
           for renamed_file in "${renamed_files[@]}"; do
-            [ ! -z "$renamed_file" ] && echo "- Renamed ${renamed_file}" >> CHANGES.md
+            if [ ! -z "$renamed_file" ]
+            then
+              echo "- Renamed ${renamed_file}" >> CHANGES.md
+            fi
           done
       - run: |
           mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.modified }}')
           for modified_file in "${modified_files[@]}"; do
-            [ ! -z "$modified_file" ] && echo "- Modified ${modified_file}" >> CHANGES.md
+            if [ ! -z "$modified_file" ]
+            then
+              echo "- Modified ${modified_file}" >> CHANGES.md
+            fi
           done
 
 
