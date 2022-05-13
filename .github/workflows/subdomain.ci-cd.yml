@@ -63,7 +63,7 @@ jobs:
             CHANGE+=$BLOCK
           fi
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
-          removed_size=(removed_files)
+          removed_size=($removed_files)
           if [ "${#removed_size[@]}" -gt "0" ]
           then
             BLOCK="#### Removed${NL}"
@@ -74,7 +74,7 @@ jobs:
             CHANGE+=$BLOCK
           fi
           mapfile -d ',' -t renamed_files < <(printf '%s,' '${{ steps.files.outputs.renamed }}')
-          renamed_size=(renamed_files)
+          renamed_size=($renamed_files)
           if [ "${#renamed_size[@]}" -gt "0" ]
           then
             BLOCK="#### Renamed${NL}"
@@ -85,7 +85,7 @@ jobs:
             CHANGE+=$BLOCK
           fi
           mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.modified }}')
-          modified_size=(modified_files)
+          modified_size=($modified_files)
           if [ "${#modified_size[@]}" -gt "0" ]
           then
             BLOCK="#### Modified${NL}"
