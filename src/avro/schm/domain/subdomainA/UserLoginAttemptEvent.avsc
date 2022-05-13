@@ -5,7 +5,7 @@
   "doc": "example app' schema",
   "fields":[
     {"name":"email","type":"string","default":"NONE"},
-    {"name":"ipP","type":"string","default":"NONE"},
+    {"name":"ip","type":"string","default":"NONE"},
     {"name":"date","type":"long","default":0},
     {"name":"result","type":"string","default":"NONE"}
   ]

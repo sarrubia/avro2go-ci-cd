@@ -46,7 +46,7 @@ jobs:
 
       - name: Version from properties
         id: tag_version
-        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
+        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='src/avro/schm/domain/subdomainA/version.properties' -key='version')"
 
       - name: Fetch modified files
         id: files
