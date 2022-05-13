@@ -51,6 +51,7 @@ jobs:
       - run: |
           NL='\n'
           CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
+          echo -e "ADDED >>>${{ steps.files.outputs.added }}<<<${NL}"
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
           if [ "${#added_files[@]}" -gt "0" ]
           then
