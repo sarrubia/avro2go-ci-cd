@@ -1,1 +1,4 @@
 .idea
+
+go/cmd/goProperties-mac
+src/avro/schemas/.DS_Store

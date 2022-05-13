@@ -1,0 +1,67 @@
+name: Subdomain Reusable Workflow
+on:
+  workflow_call:
+    inputs:
+      subdomainPath:
+        required: true
+        type: string
+
+jobs:
+  integration:
+    name: Test genereate Go Models
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Checking errors on model creation
+        run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -dry-run
+
+  deployment:
+    name: Genereate Go Models
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Autogenerate version
+        run: pwd && make version FILENAME=${{ inputs.subdomainPath }}/version.properties GITHUB_RUN_ID=${{ github.run_id }}
+
+      - name: Checking version
+        run: sh go/cmd/checkTag.sh ${{ inputs.subdomainPath }}/version.properties
+
+      - name: Run avro2go
+        run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -output-dir="go/models"
+
+      - name: Version from properties
+        id: tag_version
+        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='${{ inputs.subdomainPath }}/version.properties' -key='version')"
+
+      - name: Fetch modified files
+        id: files
+        run: |
+          NL='\n'
+          CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
+          echo -e $CHANGE >> ${{ inputs.subdomainPath }}/CHANGES.md
+
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Action"
+          git add . 
+          git commit -m "Adding Go models from Avro schema by bot"
+          git tag -m "Version ${{ steps.tag_version.outputs.number }}" -a v${{ steps.tag_version.outputs.number }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+          tags: true
