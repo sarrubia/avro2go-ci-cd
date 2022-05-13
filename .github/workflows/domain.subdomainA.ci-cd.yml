@@ -1,4 +1,4 @@
-name: go-cd
+name: subdomainA-go-cd
 on:
   pull_request:
     branches:
