@@ -50,7 +50,7 @@ jobs:
 
       - name: Fetch modified files
         id: files
-      - run: |
+        run: |
           NL='\n'
           CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
           echo -e $CHANGE >> CHANGES.md
