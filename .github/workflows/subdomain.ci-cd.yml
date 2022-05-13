@@ -83,6 +83,7 @@ jobs:
             CHANGE+=$BLOCK
           fi
           mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.modified }}')
+          echo -e "MODIFIED >>>${{ steps.files.outputs.modified }}<<< =${#modified_files[@]}= ${NL}"
           if [ "${#modified_files[@]}" -gt "0" ]
           then
             BLOCK="#### Modified${NL}"
