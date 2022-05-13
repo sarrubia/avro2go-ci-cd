@@ -45,9 +45,52 @@ jobs:
 
       - name: Fetch modified files
         id: files
-        run: |
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'csv'
+      - run: |
           NL='\n'
           CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
+          mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
+          if [ "${#added_files[@]}" -gt "0" ]
+          then
+            BLOCK="#### Added${NL}"
+            for file in "${added_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
+            done
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
+          fi
+          mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
+          if [ "${#removed_files[@]}" -gt "0" ]
+          then
+            BLOCK="#### Removed${NL}"
+            for file in "${removed_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
+            done
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
+          fi
+          mapfile -d ',' -t renamed_files < <(printf '%s,' '${{ steps.files.outputs.renamed }}')
+          if [ "${#renamed_files[@]}" -gt "0" ]
+          then
+            BLOCK="#### Renamed${NL}"
+            for file in "${renamed_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
+            done
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
+          fi
+          mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.modified }}')
+          if [ "${#modified_files[@]}" -gt "0" ]
+          then
+            BLOCK="#### Modified${NL}"
+            for file in "${modified_files[@]}"; do
+              BLOCK+="- ${file}${NL}"
+            done
+            BLOCK+=${NL}
+            CHANGE+=$BLOCK
+          fi
           echo -e $CHANGE >> ${{ inputs.subdomainPath }}/CHANGES.md
 
       - name: Commit files

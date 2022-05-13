@@ -12,7 +12,7 @@ on:
       - 'src/avro/schm/domain/subdomainB/**'
 
 jobs:
-  call-subdomain-ci-cd:
+  call-ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
     with:
       subdomainPath: 'src/avro/schm/domain/subdomainB'
