@@ -3,7 +3,7 @@
 package com_sarrubia_avro_domain_subdomainB
 
 // UserLoginAttemptEventAVSC Avro schema to send to Schema Registry
-const UserLoginAttemptEventAVSC = "{\"type\":\"record\",\"name\":\"UserLoginAttemptEvent\",\"namespace\":\"com.sarrubia.avro.domain.subdomainB\",\"doc\":\"example app' schema\",\"fields\":[{\"name\":\"email\",\"type\":\"string\",\"default\":\"NONE\"},{\"name\":\"ip\",\"type\":\"string\",\"default\":\"NONE\"},{\"name\":\"dateC\",\"type\":\"long\",\"default\":0},{\"name\":\"result\",\"type\":\"string\",\"default\":\"NONE\"}]}"
+const UserLoginAttemptEventAVSC = "{\"type\":\"record\",\"name\":\"UserLoginAttemptEvent\",\"namespace\":\"com.sarrubia.avro.domain.subdomainB\",\"doc\":\"example app' schema\",\"fields\":[{\"name\":\"email\",\"type\":\"string\",\"default\":\"NONE\"},{\"name\":\"ip\",\"type\":\"string\",\"default\":\"NONE\"},{\"name\":\"date\",\"type\":\"long\",\"default\":0},{\"name\":\"result\",\"type\":\"string\",\"default\":\"NONE\"}]}"
 
 // UserLoginAttemptEventSubject schema registry subject
 const UserLoginAttemptEventSubject = "com.sarrubia.avro.domain.subdomainB.UserLoginAttemptEvent"
@@ -12,7 +12,7 @@ const UserLoginAttemptEventSubject = "com.sarrubia.avro.domain.subdomainB.UserLo
 type UserLoginAttemptEventBase struct {
 	Email  string `avro:"email"`
 	Ip     string `avro:"ip"`
-	DateC  int64  `avro:"dateC"`
+	Date   int64  `avro:"date"`
 	Result string `avro:"result"`
 }
 
