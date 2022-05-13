@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Checking errors on model creation
-        run: cd ../../../../../ && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
+        run: pwd && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
 
   deployment:
     name: Genereate Go Models
@@ -36,10 +36,10 @@ jobs:
           fetch-depth: 0
 
       - name: Autogenerate version
-        run: cd ../../../../../ && make version FILENAME=src/avro/schm/domain/subdomainA/version.properties GITHUB_RUN_ID=${{ github.run_id }}
+        run: pwd && make version FILENAME=src/avro/schm/domain/subdomainA/version.properties GITHUB_RUN_ID=${{ github.run_id }}
 
       - name: Checking version
-        run: cd ../../../../../ && sh go/cmd/checkTag.sh src/avro/schm/domain/subdomainA/version.properties
+        run: sh go/cmd/checkTag.sh src/avro/schm/domain/subdomainA/version.properties
 
       - name: Run avro2go
         run: cd ../../../../../ && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -output-dir="go/models"
