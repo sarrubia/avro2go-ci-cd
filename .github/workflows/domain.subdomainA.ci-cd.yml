@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Checking errors on model creation
-        run: echo ${{ github.event_name }} && pwd && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
+        run: ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
 
   deployment:
     name: Genereate Go Models
