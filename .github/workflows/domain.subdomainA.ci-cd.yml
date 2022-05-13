@@ -1,0 +1,72 @@
+name: go-cd
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/avro/schemas/domain/subdomainA/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/avro/schm/domain/subdomainA/**'
+
+jobs:
+  integration:
+    name: Test genereate Go Models
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Checking errors on model creation
+        run: cd ../../../../../ && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
+
+  deployment:
+    name: Genereate Go Models
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Autogenerate version
+        run: cd ../../../../../ && make version FILENAME=src/avro/schm/domain/subdomainA/version.properties GITHUB_RUN_ID=${{ github.run_id }}
+
+      - name: Checking version
+        run: cd ../../../../../ && sh go/cmd/checkTag.sh src/avro/schm/domain/subdomainA/version.properties
+
+      - name: Run avro2go
+        run: cd ../../../../../ && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -output-dir="go/models"
+
+      - name: Version from properties
+        id: tag_version
+        run: cd ../../../../../ && echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
+
+      - name: Fetch modified files
+        id: files
+      - run: |
+          NL='\n'
+          CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
+          echo -e $CHANGE >> CHANGES.md
+
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Action"
+          git add . 
+          git commit -m "Adding Go models from Avro schema by bot"
+          git tag -m "Version ${{ steps.tag_version.outputs.number }}" -a v${{ steps.tag_version.outputs.number }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
+          tags: true
