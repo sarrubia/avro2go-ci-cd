@@ -51,8 +51,8 @@ jobs:
       - run: |
           NL='\n'
           CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
-          echo -e "ADDED >>>${{ steps.files.outputs.added }}<<<${NL}"
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
+          echo -e "ADDED >>>${{ steps.files.outputs.added }}<<< =${#added_files[@]}= ${NL}"
           if [ "${#added_files[@]}" -gt "0" ]
           then
             BLOCK="#### Added${NL}"
