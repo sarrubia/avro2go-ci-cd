@@ -14,7 +14,7 @@ on:
 jobs:
   integration:
     name: Test genereate Go Models
-    if: github.event_name == 'pull_request'
+    #if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Checking errors on model creation
-        run: pwd && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
+        run: echo ${{ github.event_name }} && pwd && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
 
   deployment:
     name: Genereate Go Models
@@ -42,18 +42,18 @@ jobs:
         run: sh go/cmd/checkTag.sh src/avro/schm/domain/subdomainA/version.properties
 
       - name: Run avro2go
-        run: cd ../../../../../ && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -output-dir="go/models"
+        run: ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -output-dir="go/models"
 
       - name: Version from properties
         id: tag_version
-        run: cd ../../../../../ && echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
+        run: echo "::set-output name=number::$(./go/cmd/goProperties -file='version.properties' -key='version')"
 
       - name: Fetch modified files
         id: files
         run: |
           NL='\n'
           CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
-          echo -e $CHANGE >> CHANGES.md
+          echo -e $CHANGE >> src/avro/schm/domain/subdomainA/CHANGES.md
 
       - name: Commit files
         run: |
