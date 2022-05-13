@@ -52,8 +52,8 @@ jobs:
           NL='\n'
           CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
-          echo -e "ADDED >>>${{ steps.files.outputs.added }}<<< =${#added_files[@]}= ${NL}"
-          if [ "${#added_files[@]}" -gt "0" ]
+          added_size=($added_files)
+          if [ "${#added_size[@]}" -gt "0" ]
           then
             BLOCK="#### Added${NL}"
             for file in "${added_files[@]}"; do
@@ -63,7 +63,8 @@ jobs:
             CHANGE+=$BLOCK
           fi
           mapfile -d ',' -t removed_files < <(printf '%s,' '${{ steps.files.outputs.removed }}')
-          if [ "${#removed_files[@]}" -gt "0" ]
+          removed_size=(removed_files)
+          if [ "${#removed_size[@]}" -gt "0" ]
           then
             BLOCK="#### Removed${NL}"
             for file in "${removed_files[@]}"; do
@@ -73,7 +74,8 @@ jobs:
             CHANGE+=$BLOCK
           fi
           mapfile -d ',' -t renamed_files < <(printf '%s,' '${{ steps.files.outputs.renamed }}')
-          if [ "${#renamed_files[@]}" -gt "0" ]
+          renamed_size=(renamed_files)
+          if [ "${#renamed_size[@]}" -gt "0" ]
           then
             BLOCK="#### Renamed${NL}"
             for file in "${renamed_files[@]}"; do
@@ -83,8 +85,8 @@ jobs:
             CHANGE+=$BLOCK
           fi
           mapfile -d ',' -t modified_files < <(printf '%s,' '${{ steps.files.outputs.modified }}')
-          echo -e "MODIFIED >>>${{ steps.files.outputs.modified }}<<< =${#modified_files[@]}= ${NL}"
-          if [ "${#modified_files[@]}" -gt "0" ]
+          modified_size=(modified_files)
+          if [ "${#modified_size[@]}" -gt "0" ]
           then
             BLOCK="#### Modified${NL}"
             for file in "${modified_files[@]}"; do
