@@ -71,3 +71,10 @@
 - src/avro/schm/domain/subdomainB/UserLoginAttemptEvent.avsc
 
 
+## v1.202205.13-build.2321584027
+#### Modified
+- .github/workflows/subdomain.ci-cd.yml
+- .github/workflows/subdomainB.yml
+- src/avro/schm/domain/subdomainB/UserLoginAttemptEvent.avsc
+
+
