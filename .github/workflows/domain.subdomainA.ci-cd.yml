@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'src/avro/schemas/domain/subdomainA/**'
+      - 'src/avro/schm/domain/subdomainA/**'
   push:
     branches:
       - main
@@ -14,7 +14,7 @@ on:
 jobs:
   integration:
     name: Test genereate Go Models
-    #if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Checking errors on model creation
-        run: echo ${{ github.event_name }} && pwd && ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
+        run: ./go/cmd/avro2go -input-dir="src/avro/schm/domain/subdomainA" -dry-run
 
   deployment:
     name: Genereate Go Models
