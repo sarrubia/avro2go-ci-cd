@@ -26,6 +26,12 @@ jobs:
       - name: Checking errors on model creation
         run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -dry-run
 
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
       - name: Java build
         env:
           JAR_VERSION: ${{ steps.tag_version.outputs.number }}
@@ -54,6 +60,12 @@ jobs:
         run: echo "::set-output name=number::$(./go/cmd/goProperties -file='${{ inputs.subdomainPath }}/version.properties' -key='version')"
 
 # JAVA
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
       - name: Java build
         env:
           JAR_VERSION: ${{ steps.tag_version.outputs.number }}
