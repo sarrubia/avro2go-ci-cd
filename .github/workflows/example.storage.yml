@@ -11,6 +11,10 @@ on:
     paths:
       - 'src/avro/schm/example/storage/**'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
