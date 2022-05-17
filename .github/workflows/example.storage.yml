@@ -22,4 +22,4 @@ jobs:
       domain: 'example'
       subdomain: 'storage'
       subdomainPath: 'src/avro/schm/example/storage'
-      splitApiKey: ${{ secrets.SPLIT_API_KEY }}
+      splitApiKey: "${{ secrets.SPLIT_API_KEY }}"
