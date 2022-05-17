@@ -11,6 +11,9 @@ on:
       subdomainPath:
         required: true
         type: string
+      splitApiKey:
+        required: true
+        type: string
 
 jobs:
   split_evaluator:
@@ -21,7 +24,7 @@ jobs:
         id: evaluator
         uses: sarrubia/splitio-evaluator-ga@v1.0
         with:
-          api-key: ${{ secrets.SPLIT_API_KEY }}
+          api-key: ${{ inputs.splitApiKey }}
           key: "GLOBAL"
           splits: |
             enable_java
