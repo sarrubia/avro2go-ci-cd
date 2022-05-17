@@ -30,7 +30,7 @@ jobs:
       treatments: ${{ steps.evaluator.outputs.result }}
 
   integration:
-    name: [CI] Test models creation
+    name: "[CI] Test models creation"
     if: github.event_name == 'pull_request'
     needs: split_evaluator
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
         run: ./gradlew build
 
   deployment:
-    name: [CD] Create Models
+    name: "[CD] Create Models"
     if: github.event_name == 'push'
     needs: split_evaluator
     runs-on: ubuntu-latest
