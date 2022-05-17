@@ -18,8 +18,10 @@ permissions:
 jobs:
   ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
+    env:
+      SPLIT_API_KEY: ${{ secrets.SPLIT_API_KEY }}
     with:
       domain: 'example'
       subdomain: 'storage'
       subdomainPath: 'src/avro/schm/example/storage'
-      splitApiKey: "${{ secrets.SPLIT_API_KEY }}"
+      splitApiKey: "${{ env.SPLIT_API_KEY }}"
