@@ -15,14 +15,11 @@ permissions:
   contents: write
   pull-requests: write
 
-env:
-  S_API_KEY: ${{ secrets.SPLIT_API_KEY }}
-
 jobs:
   ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
+    secrets: inherit
     with:
       domain: 'example'
       subdomain: 'storage'
       subdomainPath: 'src/avro/schm/example/storage'
-      splitApiKey: "$S_API_KEY"
