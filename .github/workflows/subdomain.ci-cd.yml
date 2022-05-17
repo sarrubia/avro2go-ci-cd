@@ -12,10 +12,31 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
+  split_evaluator:
+    name: Eval Splits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate action step
+        id: evaluator
+        uses: sarrubia/splitio-evaluator-ga@v1.0
+        with:
+          api-key: ${{ secrets.SPLIT_API_KEY }}
+          key: "GLOBAL"
+          splits: |
+            enable_java
+    # The job outputs must be sets in order to share the evaluation results
+    outputs:
+      treatments: ${{ steps.evaluator.outputs.result }}
+
   integration:
     name: Test models creation
     if: github.event_name == 'pull_request'
+    needs: split_evaluator
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,12 +48,14 @@ jobs:
         run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -dry-run
 
       - name: Set up JDK 11
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
 
       - name: Java build
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
         env:
           JAR_VERSION: ${{ steps.tag_version.outputs.number }}
           DOMAIN: ${{ inputs.domain }}
@@ -61,12 +84,14 @@ jobs:
 
 # JAVA
       - name: Set up JDK 11
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
 
       - name: Java build
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
         env:
           JAR_VERSION: ${{ steps.tag_version.outputs.number }}
           DOMAIN: ${{ inputs.domain }}
@@ -74,6 +99,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Java publish
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
         run: ./gradlew publish
 
 # GO
