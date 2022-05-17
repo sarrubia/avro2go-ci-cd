@@ -18,6 +18,7 @@ permissions:
 jobs:
   ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
+    secrets: inherit
     with:
       domain: 'example'
       subdomain: 'storage'
