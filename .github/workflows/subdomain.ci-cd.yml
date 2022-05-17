@@ -30,7 +30,7 @@ jobs:
       treatments: ${{ steps.evaluator.outputs.result }}
 
   integration:
-    name: Test models creation
+    name: "[CI] Test models creation"
     if: github.event_name == 'pull_request'
     needs: split_evaluator
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
         run: ./gradlew build
 
   deployment:
-    name: Create Models
+    name: "[CD] Create Models"
     if: github.event_name == 'push'
     needs: split_evaluator
     runs-on: ubuntu-latest
@@ -75,7 +75,7 @@ jobs:
       - name: Checking version
         run: sh go/cmd/checkTag.sh ${{ inputs.subdomainPath }}/version.properties
 
-      - name: Version from properties
+      - name: Exporting version from properties
         id: tag_version
         run: echo "::set-output name=number::$(./go/cmd/goProperties -file='${{ inputs.subdomainPath }}/version.properties' -key='version')"
 
@@ -100,7 +100,7 @@ jobs:
         run: ./gradlew publish
 
 # GO
-      - name: Run avro2go
+      - name: Create GO models from Avro schemas
         run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -output-dir="go/models"
 
 # CHANGES AND PUSH
@@ -109,7 +109,8 @@ jobs:
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'csv'
-      - run: |
+      - name: Write CHANGES
+        run: |
           NL='\n'
           CHANGE="## v${{ steps.tag_version.outputs.number }}${NL}"
           mapfile -d ',' -t added_files < <(printf '%s,' '${{ steps.files.outputs.added }}')
@@ -166,7 +167,7 @@ jobs:
           git commit -m "Adding Go models from Avro schema by bot"
           git tag -m "Version ${{ steps.tag_version.outputs.number }}" -a v${{ steps.tag_version.outputs.number }}
 
-      - name: Push changes
+      - name: Push files
         uses: ad-m/github-push-action@master
         with:
           branch: main

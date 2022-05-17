@@ -1,15 +1,15 @@
-name: {{__NAME__}}
+name: example.common
 on:
   pull_request:
     branches:
       - main
     paths:
-      - '{{__PATH__}}/**'
+      - 'src/avro/schm/example/common/**'
   push:
     branches:
       - main
     paths:
-      - '{{__PATH__}}/**'
+      - 'src/avro/schm/example/common/**'
 
 permissions:
   contents: write
@@ -20,6 +20,6 @@ jobs:
     uses: ./.github/workflows/subdomain.ci-cd.yml
     secrets: inherit
     with:
-      domain: '{{__DOMAIN__}}'
-      subdomain: '{{__SUBDOMAIN__}}'
-      subdomainPath: '{{__PATH__}}'
+      domain: 'example'
+      subdomain: 'common'
+      subdomainPath: 'src/avro/schm/example/common'
