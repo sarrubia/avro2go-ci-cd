@@ -1,6 +1,11 @@
 # avro2go-ci-cd
 
-Versioning and Tagging strategy: 
+### Create a domain/subdomain space
+```
+make create DOMAIN=example SUBDOMAIN=storage
+```
+
+### Versioning and Tagging strategy 
 
 ```text
 version = <major>.<minor>.<patch>-<pre-release>
@@ -19,3 +24,8 @@ For instance:
 - version= `1.202205.09-build.2296328444`
 - tag=     `v1.202205.09-build.2296328444`
 - GA run url https://github.com/sarrubia/avro2go-ci-cd/actions/runs/2296328444 
+
+### Jar files per subdomain
+```
+JAR_VERSION=1.202205.13-build.2319812568u DOMAIN="domain" SUBDOMAIN="subdomainA" gradle jar
+```

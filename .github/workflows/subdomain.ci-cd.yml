@@ -2,13 +2,19 @@ name: Subdomain Reusable Workflow
 on:
   workflow_call:
     inputs:
+      domain:
+        required: true
+        type: string
+      subdomain:
+        required: true
+        type: string
       subdomainPath:
         required: true
         type: string
 
 jobs:
   integration:
-    name: Test genereate Go Models
+    name: Test models creation
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
@@ -20,8 +26,15 @@ jobs:
       - name: Checking errors on model creation
         run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -dry-run
 
+      - name: Java build
+        env:
+          JAR_VERSION: ${{ steps.tag_version.outputs.number }}
+          DOMAIN: ${{ inputs.domain }}
+          SUBDOMAIN: ${{ inputs.subdomain }}
+        run: ./gradlew build
+
   deployment:
-    name: Genereate Go Models
+    name: Create Models
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
@@ -31,18 +44,31 @@ jobs:
           fetch-depth: 0
 
       - name: Autogenerate version
-        run: pwd && make version FILENAME=${{ inputs.subdomainPath }}/version.properties GITHUB_RUN_ID=${{ github.run_id }}
+        run: make version FILENAME=${{ inputs.subdomainPath }}/version.properties GITHUB_RUN_ID=${{ github.run_id }}
 
       - name: Checking version
         run: sh go/cmd/checkTag.sh ${{ inputs.subdomainPath }}/version.properties
-
-      - name: Run avro2go
-        run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -output-dir="go/models"
 
       - name: Version from properties
         id: tag_version
         run: echo "::set-output name=number::$(./go/cmd/goProperties -file='${{ inputs.subdomainPath }}/version.properties' -key='version')"
 
+# JAVA
+      - name: Java build
+        env:
+          JAR_VERSION: ${{ steps.tag_version.outputs.number }}
+          DOMAIN: ${{ inputs.domain }}
+          SUBDOMAIN: ${{ inputs.subdomain }}
+        run: ./gradlew clean build
+
+      - name: Java publish
+        run: ./gradlew publish
+
+# GO
+      - name: Run avro2go
+        run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -output-dir="go/models"
+
+# CHANGES AND PUSH
       - name: Fetch modified files
         id: files
         uses: jitterbit/get-changed-files@v1
