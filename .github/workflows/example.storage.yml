@@ -15,11 +15,12 @@ permissions:
   contents: write
   pull-requests: write
 
+env:
+  SPLIT_API_KEY: ${{ secrets.SPLIT_API_KEY }}
+
 jobs:
   ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
-    env:
-      SPLIT_API_KEY: ${{ secrets.SPLIT_API_KEY }}
     with:
       domain: 'example'
       subdomain: 'storage'
