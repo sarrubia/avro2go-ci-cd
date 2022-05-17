@@ -16,7 +16,7 @@ permissions:
   pull-requests: write
 
 env:
-  SPLIT_API_KEY: ${{ secrets.SPLIT_API_KEY }}
+  S_API_KEY: ${{ secrets.SPLIT_API_KEY }}
 
 jobs:
   ci-cd:
@@ -25,4 +25,4 @@ jobs:
       domain: 'example'
       subdomain: 'storage'
       subdomainPath: 'src/avro/schm/example/storage'
-      splitApiKey: "${{ env.SPLIT_API_KEY }}"
+      splitApiKey: ${{env.S_API_KEY}}
