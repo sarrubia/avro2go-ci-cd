@@ -61,6 +61,7 @@ jobs:
   deployment:
     name: Create Models
     if: github.event_name == 'push'
+    needs: split_evaluator
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
