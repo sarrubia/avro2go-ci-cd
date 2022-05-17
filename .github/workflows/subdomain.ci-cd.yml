@@ -2,14 +2,41 @@ name: Subdomain Reusable Workflow
 on:
   workflow_call:
     inputs:
+      domain:
+        required: true
+        type: string
+      subdomain:
+        required: true
+        type: string
       subdomainPath:
         required: true
         type: string
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
+  split_evaluator:
+    name: Eval Splits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate action step
+        id: evaluator
+        uses: sarrubia/splitio-evaluator-ga@v1.0
+        with:
+          api-key: ${{ secrets.SPLIT_API_KEY }}
+          key: "GLOBAL"
+          splits: |
+            enable_java
+    # The job outputs must be sets in order to share the evaluation results
+    outputs:
+      treatments: ${{ steps.evaluator.outputs.result }}
+
   integration:
-    name: Test genereate Go Models
+    name: Test models creation
     if: github.event_name == 'pull_request'
+    needs: split_evaluator
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,8 +47,23 @@ jobs:
       - name: Checking errors on model creation
         run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -dry-run
 
+      - name: Set up JDK 11
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Java build
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
+        env:
+          JAR_VERSION: ${{ steps.tag_version.outputs.number }}
+          DOMAIN: ${{ inputs.domain }}
+          SUBDOMAIN: ${{ inputs.subdomain }}
+        run: ./gradlew build
+
   deployment:
-    name: Genereate Go Models
+    name: Create Models
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
@@ -31,18 +73,40 @@ jobs:
           fetch-depth: 0
 
       - name: Autogenerate version
-        run: pwd && make version FILENAME=${{ inputs.subdomainPath }}/version.properties GITHUB_RUN_ID=${{ github.run_id }}
+        run: make version FILENAME=${{ inputs.subdomainPath }}/version.properties GITHUB_RUN_ID=${{ github.run_id }}
 
       - name: Checking version
         run: sh go/cmd/checkTag.sh ${{ inputs.subdomainPath }}/version.properties
-
-      - name: Run avro2go
-        run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -output-dir="go/models"
 
       - name: Version from properties
         id: tag_version
         run: echo "::set-output name=number::$(./go/cmd/goProperties -file='${{ inputs.subdomainPath }}/version.properties' -key='version')"
 
+# JAVA
+      - name: Set up JDK 11
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Java build
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
+        env:
+          JAR_VERSION: ${{ steps.tag_version.outputs.number }}
+          DOMAIN: ${{ inputs.domain }}
+          SUBDOMAIN: ${{ inputs.subdomain }}
+        run: ./gradlew clean build
+
+      - name: Java publish
+        if: ${{ fromJson(needs.split_evaluator.outputs.treatments).enable_java == 'on' }}
+        run: ./gradlew publish
+
+# GO
+      - name: Run avro2go
+        run: ./go/cmd/avro2go -input-dir="${{ inputs.subdomainPath }}" -output-dir="go/models"
+
+# CHANGES AND PUSH
       - name: Fetch modified files
         id: files
         uses: jitterbit/get-changed-files@v1

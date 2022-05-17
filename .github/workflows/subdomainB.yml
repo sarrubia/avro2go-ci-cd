@@ -15,4 +15,6 @@ jobs:
   ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
     with:
+      domain: 'domain'
+      subdomain: 'subdomainB'
       subdomainPath: 'src/avro/schm/domain/subdomainB'

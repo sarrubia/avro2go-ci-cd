@@ -15,4 +15,6 @@ jobs:
   ci-cd:
     uses: ./.github/workflows/subdomain.ci-cd.yml
     with:
+      domain: '{{__DOMAIN__}}'
+      subdomain: '{{__SUBDOMAIN__}}'
       subdomainPath: '{{__PATH__}}'

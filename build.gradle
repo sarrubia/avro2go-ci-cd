@@ -1,0 +1,91 @@
+import com.github.davidmc24.gradle.plugin.avro.GenerateAvroJavaTask
+
+buildscript {
+    repositories {
+        maven {
+            url "https://sarrubia.jfrog.io/artifactory/maven-all-virtual/"
+            credentials {
+              username = project.findProperty('artifactoryUser') ?: "$System.env.ARTIFACTORY_USER"
+              password = project.findProperty('artifactoryPassword') ?: "$System.env.ARTIFACTORY_TOKEN"
+            }
+        }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "java-library"
+    id "com.github.davidmc24.gradle.plugin.avro-base" version "1.3.0"
+}
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = 11
+
+apply plugin: 'maven-publish'
+
+repositories {
+    maven {
+        url "https://sarrubia.jfrog.io/artifactory/maven-all-virtual/"
+        credentials {
+          username = project.findProperty('artifactoryUser') ?: "$System.env.ARTIFACTORY_USER"
+          password = project.findProperty('artifactoryPassword') ?: "$System.env.ARTIFACTORY_TOKEN"
+        }
+    }
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.apache.avro:avro:1.11.0"
+}
+
+def jarName = "$System.env.DOMAIN" + "." + "$System.env.SUBDOMAIN"
+def jarVersion = "$System.env.JAR_VERSION"
+
+jar {
+    manifest {
+        attributes(
+                'Implementation-Title': jarName,
+                'Implementation-Version': jarVersion,
+        )
+    }
+    archiveBaseName = jarName
+    archiveVersion = jarVersion
+}
+
+def generateAvro = tasks.register("generateAvro", GenerateAvroJavaTask) {
+    exclude("**/*.properties")
+    exclude("**/*.md")
+    source("src/avro/schm/$System.env.DOMAIN/$System.env.SUBDOMAIN")
+    outputDir = file("targets/main/avro")
+}
+
+tasks.named("compileJava").configure {
+    source(generateAvro)
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.sarrubia.avro'
+            artifactId = jarName
+            version = jarVersion
+            from components.java
+            pom {
+                name = "$System.env.DOMAIN $System.env.SUBDOMAIN Avro Models"
+                description = 'Generated avro data models.'
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = "https://sarrubia.jfrog.io/artifactory/maven-dev"
+            credentials {
+                username = "$System.env.ARTIFACTORY_USER"
+                password = "$System.env.ARTIFACTORY_TOKEN"
+            }
+        }
+    }
+}
+

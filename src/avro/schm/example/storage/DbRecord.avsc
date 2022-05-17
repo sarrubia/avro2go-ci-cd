@@ -1,0 +1,19 @@
+{
+  "name": "DbRecord",
+  "namespace": "com.sarrubia.avro.example.storage",
+  "type": "record",
+  "fields": [
+    {
+      "name": "rName",
+      "type": "string"
+    },
+    {
+      "name": "rValue",
+      "type": "string"
+    },
+    {
+      "name": "rSize",
+      "type": "long"
+    }
+  ]
+}

@@ -2,3 +2,7 @@
 
 go/cmd/goProperties-mac
 src/avro/schemas/.DS_Store
+
+#JAVA
+targets
+build
